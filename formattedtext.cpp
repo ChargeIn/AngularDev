@@ -1,16 +1,11 @@
 #include "formattedtext.h"
 
-#include "string.h"
-
-#include <QRegularExpression>
-
-FormattedText::FormattedText()
+FormattedText::FormattedText(Formatter* formatter)
 {
+    this->formatter = formatter;
     blocks = new FormattedBlock[0];
-    cursor = {0,0,0};
     addBlock(0);
-    addLine();
-    cursor = {0,0,0};
+    cursor = {0,0,0,0};
 }
 
 FormattedText::~FormattedText()
@@ -62,14 +57,15 @@ void FormattedText::addLine()
         line->strings = str;
         block->size++;
         cursor.line++;
+        cursor.character = 0;
         return;
     }
 
     // add a new block
     cursor.block++;
-    cursor.line = -1;
+    cursor.line = 0;
+    cursor.character = 0;
     addBlock(cursor.block);
-    addLine();
 }
 
 void FormattedText::removeLine()
@@ -87,38 +83,98 @@ void FormattedText::removeLine()
 
         block->size--;
         cursor.line--;
+        cursor.character = blocks[cursor.block].lines[cursor.line].rawText->size();
     } else {
         if(cursor.block > 0){
             removeBlock(cursor.block);
             cursor.block--;
             cursor.line = blocks[cursor.block].size-1;
+            cursor.character = blocks[cursor.block].lines[cursor.line].rawText->size();
         }
     }
 }
 
 void FormattedText::moveLeft()
 {
-
+    if(cursor.character == 0){
+        if(cursor.line > 0){
+            cursor.line--;
+            cursor.character = blocks[cursor.block].lines[cursor.line].rawText->size();
+        } else {
+            if(cursor.block > 0){
+                cursor.block--;
+                cursor.line = blocks[cursor.block].size-1;
+                cursor.character = blocks[cursor.block].lines[cursor.line].rawText->size();
+            }
+        }
+    } else {
+        cursor.character--;
+    }
+    lastCharPos = cursor.character;
 }
 
 void FormattedText::moveRight()
 {
-
+    FormattedBlock* block = &blocks[cursor.block];
+    if(cursor.character < block->lines[cursor.line].size -1){
+        cursor.character++;
+    } else {
+        if(cursor.line < block->size-1){
+            cursor.line++;
+            cursor.character = 0;
+        } else {
+            if(cursor.block < blockCount-1){
+                cursor.block++;
+                cursor.line = 0;
+                cursor.character = 0;
+            }
+        }
+    }
+    lastCharPos = cursor.character;
 }
 
 void FormattedText::moveUp()
 {
+    if(cursor.line > 0) {
+        cursor.line--;
+    } else {
+        if(cursor.block > 0){
+            cursor.block--;
+            cursor.line = blocks[cursor.block].size-1;
+        } else {
+            return;
+        }
+    }
 
+    int maxIndex = blocks[cursor.block].lines[cursor.line].rawText->size()-1;
+
+    if(lastCharPos > maxIndex){
+        cursor.character = maxIndex;
+    } else {
+        cursor.character = lastCharPos;
+    }
 }
 
 void FormattedText::moveDown()
 {
+    if(cursor.line < blocks[cursor.block].size-1){
+        cursor.line++;
+    } else {
+        if(cursor.block < blockCount-1){
+            cursor.block++;
+            cursor.line = 0;
+        } else {
+            return;
+        }
+    }
 
-}
+    int maxIndex = blocks[cursor.block].lines[cursor.line].rawText->size()-1;
 
-void FormattedText::clearAll()
-{
-
+    if(lastCharPos > maxIndex){
+        cursor.character = maxIndex;
+    } else {
+        cursor.character = lastCharPos;
+    }
 }
 
 void FormattedText::removeLastChar()
@@ -127,6 +183,7 @@ void FormattedText::removeLastChar()
 
     if(line->rawText->size() > 0){
         line->rawText->chop(1);
+        cursor.character--;
     } else {
         removeLine();
     }
@@ -137,13 +194,13 @@ void FormattedText::removeLastWord()
     FormattedLine* line = &blocks[cursor.block].lines[cursor.line];
 
     if(line->rawText->size() > 0){
-        QRegularExpression separators = QRegularExpression("(\\s+ |[ #:;,.+\\-_\\(\\{\\}\\)\\/])");
-        int lastMatch = line->rawText->lastIndexOf(separators);
+        int lastMatch = line->rawText->lastIndexOf(*formatter->getSeparators());
         int toRemove = line->rawText->size() - lastMatch - 1;
         if(toRemove < 1){
             toRemove = 1;
         }
         line->rawText->chop(toRemove);
+        cursor.character -= toRemove;
     } else {
         removeLine();
     }
@@ -153,6 +210,8 @@ void FormattedText::writeText(QString input)
 {
     QString* rawText = blocks[cursor.block].lines[cursor.line].rawText;
     rawText->append(input);
+    cursor.character += input.size();
+    lastCharPos = cursor.character;
 }
 
 void FormattedText::addBlock(int pos)
@@ -167,7 +226,17 @@ void FormattedText::addBlock(int pos)
     delete[] blocks;
     blocks = newBlocks;
 
-    blocks[pos] = { 0, new FormattedLine[blockSize]};
+    blocks[pos] = { 1, new FormattedLine[blockSize]};
+    blocks[pos].lines[0].rawText = new QString();
+    blocks[pos].lines[0].size = 1;
+
+    FormattedString* str = new FormattedString[1];
+    str[0].bg = 1;
+    str[0].fg = 0;
+    str[0].format = NONE;
+    str[0].text = new QString();
+
+    blocks[pos].lines[0].strings = str;
     blockCount++;
 }
 

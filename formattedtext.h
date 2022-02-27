@@ -3,25 +3,7 @@
 
 #include <QString>
 
-// formatting of the strings
-enum S_FORMAT {
-    NONE = 0,
-    ITALIC = 1,
-    BOLD = 2
-};
-
-typedef struct {
-    QString* text;
-    int fg; // foreground color index
-    int bg; // background color index
-    S_FORMAT format;
-} FormattedString;
-
-typedef struct {
-    int size;
-    FormattedString* strings;
-    QString* rawText;
-} FormattedLine;
+#include "formatter.h"
 
 typedef struct {
     int size;
@@ -32,15 +14,22 @@ typedef struct {
     int block;
     int line;
     int character;
-} Position;
+    int scope;
+} Cursor;
+
+enum TEXT_SCOPE {
+    SCOPE_NONE = 1 << 0,
+};
 
 class FormattedText
 {
 public:
+    Formatter* formatter;
     int blockCount = 0;
-    const int blockSize = 50;
+    const int blockSize = 5;
     FormattedBlock* blocks;
-    Position cursor;
+    Cursor cursor;
+    int lastCharPos = 0; // last x position of the cursor before up/down move
 
     FormattedText();
 
@@ -61,8 +50,6 @@ public:
     void moveUp();
 
     void moveDown();
-
-    void clearAll();
 
     void removeLastChar();
 

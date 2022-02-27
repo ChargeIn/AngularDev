@@ -2,12 +2,14 @@
 
 #include <QPainter>
 
+#include "angularformatter.h"
+
 CodeEditor::CodeEditor(QFile *file, QWidget *parent)
-    : QWidget{parent}, win{0,0,0, 8}
+    : QWidget{parent}, win{0,0,0, 8.5,10,40}
 {
     // styles
     setAttribute(Qt::WA_StyledBackground, true);
-    setStyleSheet("background-color: #181818; font-size: 12px; font-weight: 500; color: #bbbbbb");
+    setStyleSheet("background-color: #181818; font-size: 14px; font-weight: 500; color: #bbbbbb");
 
     QFont mono = QFont("Monospace");
     mono.setFixedPitch(true);
@@ -21,7 +23,13 @@ CodeEditor::CodeEditor(QFile *file, QWidget *parent)
         addLine();
     }
 
-    text = new FormattedText();
+    formatter = new AngularFormatter();
+    text = new FormattedText(formatter);
+}
+
+CodeEditor::~CodeEditor(){
+    delete text;
+    delete formatter;
 }
 
 void CodeEditor::paintEvent(QPaintEvent *event)
@@ -35,14 +43,26 @@ void CodeEditor::paintEvent(QPaintEvent *event)
         for(int j = 0; j < block->size; j++){
             FormattedLine* line = &block->lines[j];
 
-            painter.drawText(QPointF(10, yPos), QString::number(count));
-            painter.drawText(QPointF(40, yPos), *line->rawText);
+            painter.drawText(QPointF(win.numberOffset, yPos), QString::number(count));
+            painter.drawText(QPointF(win.textOffset, yPos), *line->rawText);
 
             yPos+= win.lineheight;
             count++;
         }
-        painter.drawText(QPointF(70, yPos - win.lineheight), "------");
+        painter.drawText(QPointF(500, yPos - win.lineheight), "------");
     }
+
+    // draw cursor
+    double cursorY = 0, cursorX = 0;
+    for(int i = 0; i < text->cursor.block; i++){
+        cursorY += text->blocks[i].size*win.lineheight;
+    }
+
+    cursorY += (text->cursor.line + 1) * win.lineheight;
+    cursorX = win.textOffset + text->cursor.character * win.charWidth;
+
+    painter.setBackgroundMode(Qt::TransparentMode);
+    painter.drawText(QPointF(cursorX, cursorY), cursorChar);
 
    /** QPainter painter(this);
     painter.setBackgroundMode(Qt::BGMode::OpaqueMode);
@@ -103,6 +123,14 @@ void CodeEditor::keyPressEvent(QKeyEvent *event)
         } else {
             text->removeLastChar();
         }
+    } else if(event->key() == Qt::Key_Left){
+        text->moveLeft();
+    } else if(event->key() == Qt::Key_Right){
+        text->moveRight();
+    } else if(event->key() == Qt::Key_Up){
+        text->moveUp();
+    } else if(event->key() == Qt::Key_Down){
+        text->moveDown();
     } else if(event->text() != "") {
         text->writeText(event->text());
     }

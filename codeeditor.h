@@ -5,14 +5,18 @@
 #include <QWidget>
 #include <QFile>
 #include <QResizeEvent>
+#include <QChar>
 
 #include "formattedtext.h"
+#include "formatter.h"
 
 typedef struct {
     int height; // number of lines
     int width;  // number of characters per line
     double lineheight;
     float charWidth;
+    int numberOffset; // line counter offset
+    int textOffset; // text offset from the left
 } EditorWindow;
 
 class CodeEditor : public QWidget
@@ -20,6 +24,8 @@ class CodeEditor : public QWidget
     Q_OBJECT
 public:
     explicit CodeEditor(QFile *file = nullptr, QWidget *parent = nullptr);
+
+    ~CodeEditor();
 
     void addLine();
 
@@ -48,6 +54,8 @@ protected:
 private:
     EditorWindow win;
     FormattedText* text;
+    Formatter* formatter;
+    const QChar cursorChar = QChar(9613);
 
     /*
      * Terminal colors (same as xterm)

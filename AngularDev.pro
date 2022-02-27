@@ -11,14 +11,17 @@ CONFIG += c++11
 include(libs/QLightTerminal/QLightTerminal.pri)
 
 SOURCES += \
+    angularformatter.cpp \
     codeeditor.cpp \
     formattedtext.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
+    angularformatter.h \
     codeeditor.h \
     formattedtext.h \
+    formatter.h \
     mainwindow.h
 
 FORMS += \
