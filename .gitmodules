@@ -1,0 +1,3 @@
+[submodule "libs/QLightTerminal"]
+	path = libs/QLightTerminal
+	url = https://github.com/ChargeIn/QLightTerminal.git
