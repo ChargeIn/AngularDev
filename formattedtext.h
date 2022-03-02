@@ -31,7 +31,7 @@ public:
     Cursor cursor;
     int lastCharPos = 0; // last x position of the cursor before up/down move
 
-    FormattedText();
+    FormattedText(Formatter* formatter);
 
     ~FormattedText();
 

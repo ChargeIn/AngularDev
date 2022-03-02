@@ -116,7 +116,7 @@ void FormattedText::moveLeft()
 void FormattedText::moveRight()
 {
     FormattedBlock* block = &blocks[cursor.block];
-    if(cursor.character < block->lines[cursor.line].size -1){
+    if(cursor.character < block->lines[cursor.line].rawText->size()){
         cursor.character++;
     } else {
         if(cursor.line < block->size-1){
@@ -212,6 +212,7 @@ void FormattedText::writeText(QString input)
     rawText->append(input);
     cursor.character += input.size();
     lastCharPos = cursor.character;
+    formatter->formatLine(&blocks[cursor.block].lines[cursor.line]);
 }
 
 void FormattedText::addBlock(int pos)

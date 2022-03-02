@@ -3,6 +3,9 @@
 #include <QPainter>
 
 #include "angularformatter.h"
+#include "libs/Prettier/prettier.h"
+
+#include <string>
 
 CodeEditor::CodeEditor(QFile *file, QWidget *parent)
     : QWidget{parent}, win{0,0,0, 8.5,10,40}
@@ -19,8 +22,6 @@ CodeEditor::CodeEditor(QFile *file, QWidget *parent)
 
     if(file != nullptr){
         openFile(file);
-    } else {
-        addLine();
     }
 
     formatter = new AngularFormatter();
@@ -37,20 +38,65 @@ void CodeEditor::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     double yPos = win.lineheight;
     int count = 0;
+    double offset = win.textOffset;
+
+    int bgColor = -1;
+    int fgColor = -1;
+
+    QString currentLine = QString();
+
+    bool changed = false;
 
     for(int i = 0; i < text->blockCount; i++){
         FormattedBlock* block = &text->blocks[i];
         for(int j = 0; j < block->size; j++){
             FormattedLine* line = &block->lines[j];
 
-            painter.drawText(QPointF(win.numberOffset, yPos), QString::number(count));
-            painter.drawText(QPointF(win.textOffset, yPos), *line->rawText);
+            for(int j = 0; j < line->size; j++){
+                FormattedString str = line->strings[j];
 
+                if(str.fg != fgColor){
+                    fgColor = str.fg;
+                    painter.setPen(colors[fgColor]);
+                    changed = true;
+                }
+
+                if(str.bg != bgColor){
+                    bgColor = str.bg;
+                    painter.setBackground(QBrush(colors[bgColor]));
+                    changed = true;
+                }
+
+                if(changed){
+                    changed = false;
+                    painter.drawText(QPointF(offset, yPos), currentLine);
+                    offset += currentLine.length()*win.charWidth;
+                    qDebug() << "first:" << offset << ":" << yPos << ":" << currentLine;
+                    currentLine = "";
+                }
+
+                currentLine += *str.text;
+            }
+            qDebug() << offset << ":" << yPos << ":" << currentLine;
+            std::string str= currentLine.toStdString();
+            qDebug() << Prettier::format(&str, nullptr).formatted.data();
+            painter.drawText(QPointF(offset, yPos), currentLine);
+            currentLine = "";
             yPos+= win.lineheight;
+            offset = win.textOffset;
             count++;
         }
         painter.drawText(QPointF(500, yPos - win.lineheight), "------");
     }
+    // draw line number
+    yPos = win.lineheight;
+    painter.setPen(colors[1]);
+    painter.setBackground(QBrush(colors[0]));
+    for(int i = 0; i < count; i++){
+          painter.drawText(QPointF(win.numberOffset, yPos), QString::number(i));
+          yPos += win.lineheight;
+    }
+
 
     // draw cursor
     double cursorY = 0, cursorX = 0;
@@ -173,6 +219,4 @@ void CodeEditor::mouseMoveEvent(QMouseEvent *event)
 }
 
 // --------------------------- Editor Functions ----------------------------
-void CodeEditor::addLine() {
 
-}

@@ -3,7 +3,7 @@
 
 [![Current Version](https://img.shields.io/badge/version-0.0.0-green.svg)](https://github.com/ChargeIn/AngularDev)
 
-A soon to be simple lightweight angular editor for Qt6. 
+A soon to be simple lightweight angular editor based on Qt6. 
 
 
 ---

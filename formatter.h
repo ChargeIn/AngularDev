@@ -26,14 +26,10 @@ typedef struct {
 class Formatter
 {
 public:
-    Formatter();
-
-    virtual ~Formatter();
-
-    virtual const QRegularExpression* getSeparators();
+    virtual const QRegularExpression* getSeparators() = 0;
 
     // reformates the line based on the raw text
-    virtual FormattedLine* formatLine(FormattedLine* line);
+    virtual FormattedLine* formatLine(FormattedLine* line) = 0;
 };
 
 #endif // FORMATTER_H

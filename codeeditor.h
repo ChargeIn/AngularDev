@@ -27,8 +27,6 @@ public:
 
     ~CodeEditor();
 
-    void addLine();
-
 public slots:
     void openFile(QFile *file);
 
@@ -60,9 +58,10 @@ private:
     /*
      * Terminal colors (same as xterm)
      */
-    constexpr static const QColor colors[2] = {
+    constexpr static const QColor colors[3] = {
+        QColor(24,24,24),            // Default background color
         QColor(187,187,187),        // Default font color
-        QColor(24,24,24)            // Default background color
+        QColor(204, 120, 50)      // Base Key Words
     };
 };
 
