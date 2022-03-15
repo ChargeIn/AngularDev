@@ -3,7 +3,8 @@
 #include <QPainter>
 
 #include "angularformatter.h"
-#include "libs/Prettier/prettier.h"
+#include "formatter.h"
+#include "angular/lexer.h"
 
 #include <string>
 
@@ -57,13 +58,11 @@ void CodeEditor::paintEvent(QPaintEvent *event)
 
                 if(str.fg != fgColor){
                     fgColor = str.fg;
-                    painter.setPen(colors[fgColor]);
                     changed = true;
                 }
 
                 if(str.bg != bgColor){
                     bgColor = str.bg;
-                    painter.setBackground(QBrush(colors[bgColor]));
                     changed = true;
                 }
 
@@ -71,15 +70,15 @@ void CodeEditor::paintEvent(QPaintEvent *event)
                     changed = false;
                     painter.drawText(QPointF(offset, yPos), currentLine);
                     offset += currentLine.length()*win.charWidth;
-                    qDebug() << "first:" << offset << ":" << yPos << ":" << currentLine;
                     currentLine = "";
+
+                    // update painter to new color
+                    painter.setPen(colors[fgColor]);
+                    painter.setBackground(QBrush(colors[bgColor]));
                 }
 
-                currentLine += *str.text;
+                currentLine += str.text;
             }
-            qDebug() << offset << ":" << yPos << ":" << currentLine;
-            std::string str= currentLine.toStdString();
-            qDebug() << Prettier::format(&str, nullptr).formatted.data();
             painter.drawText(QPointF(offset, yPos), currentLine);
             currentLine = "";
             yPos+= win.lineheight;

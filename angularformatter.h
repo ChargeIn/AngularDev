@@ -7,6 +7,7 @@
 #include <QColor>
 
 #include "formatter.h"
+#include "angular/lexer.h"
 
 class AngularFormatter: public Formatter
 {
@@ -23,6 +24,7 @@ public:
     FormattedLine* formatLine(FormattedLine* line) override;
 
 private:
+    Lexer l;
 };
 
 #endif // ANGULARFORMATTER_H

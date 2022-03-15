@@ -11,7 +11,7 @@ enum STR_FORMAT {
 };
 
 typedef struct {
-    QString* text;
+    QString text;
     int fg; // foreground color index
     int bg; // background color index
     STR_FORMAT format;

@@ -27,16 +27,8 @@ void FormattedText::deleteBlock(FormattedBlock *block)
 
 void FormattedText::deleteLine(FormattedLine *line)
 {
-    for(int j = 0; j < line->size; j++){
-        deleteString(&line->strings[j]);
-    }
     delete[] line->strings;
     delete line->rawText;
-}
-
-void FormattedText::deleteString(FormattedString *string)
-{
-    delete string->text;
 }
 
 void FormattedText::addLine()
@@ -52,7 +44,7 @@ void FormattedText::addLine()
         str[0].bg = 1;
         str[0].fg = 0;
         str[0].format = NONE;
-        str[0].text = new QString();
+        str[0].text = QString();
 
         line->strings = str;
         block->size++;
@@ -74,9 +66,6 @@ void FormattedText::removeLine()
 
     if(block->size > 1){
         FormattedLine* line = &block->lines[cursor.line];
-        for(int i = 0; i < line->size; i++){
-            deleteString(&line->strings[i]);
-        }
         line->rawText->clear();
         line->strings = new FormattedString[0];
         line->size = 0;
@@ -235,7 +224,7 @@ void FormattedText::addBlock(int pos)
     str[0].bg = 1;
     str[0].fg = 0;
     str[0].format = NONE;
-    str[0].text = new QString();
+    str[0].text = QString();
 
     blocks[pos].lines[0].strings = str;
     blockCount++;

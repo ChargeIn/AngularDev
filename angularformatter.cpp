@@ -3,6 +3,8 @@
 #include <QRegularExpressionMatchIterator>
 #include <QRegularExpressionMatch>
 
+#include <vector>
+
 AngularFormatter::AngularFormatter()
 {
 
@@ -17,49 +19,39 @@ const QRegularExpression* AngularFormatter::getSeparators(){
 }
 
 FormattedLine* AngularFormatter::formatLine(FormattedLine *line){
-    FormattedString* tempLine = new FormattedString[line->rawText->size()];
+    std::vector<Token> tokens = l.tokenize(*line->rawText);
+    FormattedString* tempLine = new FormattedString[tokens.size()];
 
-    int matchCount = 0;
     int start = 0;
-    while(start < line->rawText->size()){
-        QString match = line->rawText->section(separators, start);
-        start+= match.size();
-        tempLine[matchCount].text = new QString(match.data());
+    int i = 0;
+    while(i < tokens.size()){
+        FormattedString* s = &tempLine[i];
 
-        bool matched = false;
-
-        for(int i = 0; i < baseKeyWords.size(); i++){
-            if(match == baseKeyWords[i]){
-                matched = true;
-                tempLine[matchCount].bg = 0;
-                tempLine[matchCount].fg = 2;
-                tempLine[matchCount].format = NONE;
-
+        switch(tokens[i].type) {
+            case TokenType::Keyword:
+                s->bg = 0;
+                s->fg = 2;
                 break;
-            }
+            case TokenType::Number:
+                s->bg = 0;
+                s->fg = 3;
+                break;
+            default:
+                s->bg = 0;
+                s->fg = 1;
         }
 
-        if(!matched){
-            tempLine[matchCount].bg = 0;
-            tempLine[matchCount].fg = 1;
-            tempLine[matchCount].format = NONE;
-        }
-
-        matchCount ++;
+        s->format = STR_FORMAT::NONE;
+        s->text = line->rawText->sliced(start, tokens[i].end - start);
+        start = tokens[i].end;
+        i++;
     }
-
-    FormattedString* sizedLine = new FormattedString[matchCount];
-    ::memcpy(sizedLine, tempLine, matchCount * sizeof(FormattedString));
 
     // delete old line
-    for(int i = 0; i < line->size; i++){
-        delete line->strings[i].text;
-    }
     delete[] line->strings;
-    delete[] tempLine;
 
-    line->strings = sizedLine;
-    line->size = matchCount;
+    line->strings = tempLine;
+    line->size = tokens.size();
 
     return line;
 }

@@ -58,10 +58,11 @@ private:
     /*
      * Terminal colors (same as xterm)
      */
-    constexpr static const QColor colors[3] = {
-        QColor(24,24,24),            // Default background color
+    constexpr static const QColor colors[4] = {
+        QColor(24,24,24),           // Default background color
         QColor(187,187,187),        // Default font color
-        QColor(204, 120, 50)      // Base Key Words
+        QColor(204, 120, 50),       // Base Key Words
+        QColor(104, 151, 187)       // Numbers
     };
 };
 

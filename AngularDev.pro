@@ -9,9 +9,12 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 include(libs/QLightTerminal/QLightTerminal.pri)
-include(libs/Prettier/Prettier.pri)
 
 SOURCES += \
+    angular/chars.cpp \
+    angular/lexer.cpp \
+    angular/parser.cpp \
+    estree/estree.cpp \
     angularformatter.cpp \
     codeeditor.cpp \
     formattedtext.cpp \
@@ -19,6 +22,11 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    angular/chars.h \
+    angular/lexer.h \
+    angular/parser.h \
+    estree/estree.h \
+    estree/types.h \
     angularformatter.h \
     codeeditor.h \
     formattedtext.h \

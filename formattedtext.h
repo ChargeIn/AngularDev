@@ -67,8 +67,6 @@ private:
     void deleteBlock(FormattedBlock* block);
 
     void deleteLine(FormattedLine* line);
-
-    void deleteString(FormattedString* string);
 };
 
 #endif // FORMATTEDTEXT_H
