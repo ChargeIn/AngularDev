@@ -7,7 +7,7 @@
 #include <QColor>
 
 #include "formatter.h"
-#include "angular/lexer.h"
+#include "typescript/lexer.h"
 
 class AngularFormatter: public Formatter
 {

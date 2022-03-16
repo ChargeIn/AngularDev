@@ -2,9 +2,9 @@
 
 #include <QPainter>
 
-#include "angularformatter.h"
+#include "parser/angular/angularformatter.h"
+#include "parser/angular/typescript/lexer.h"
 #include "formatter.h"
-#include "angular/lexer.h"
 
 #include <string>
 

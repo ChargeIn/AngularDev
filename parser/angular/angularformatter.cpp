@@ -36,6 +36,10 @@ FormattedLine* AngularFormatter::formatLine(FormattedLine *line){
                 s->bg = 0;
                 s->fg = 3;
                 break;
+            case TokenType::String:
+                s->bg = 0;
+                s->fg = 4;
+                break;
             default:
                 s->bg = 0;
                 s->fg = 1;

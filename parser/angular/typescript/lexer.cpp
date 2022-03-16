@@ -446,7 +446,24 @@ Token _Scanner::scanString()
 {
     int start = index;
     int quote = peek;
-    advance();
+    advance(); // skip initial quote
+
+    while(peek != quote) {
+        if(peek == Chars::$BACKSLASH) {
+            advance();
+        } else if(peek == Chars::$EOF) {
+            index = length;
+            return error("Unterminated quote", 0);
+        }
+        advance();
+    }
+
+    QString last = input.sliced(start, index - start);
+    advance(); // Skip terminating quote.
+
+    return Token::newStringToken(start, index, last);
+
+    /**  Support for hex conversion
 
     QString buffer = "";
     int marker = index;
@@ -454,10 +471,11 @@ Token _Scanner::scanString()
 
     while(peek != quote) {
         if(peek == Chars::$BACKSLASH) {
+            buffer += input.sliced(marker, index - marker);
             advance();
             int unescapedCode;
 
-            if(peek == Chars::$u) {
+            if(peek == Chars::$u && index < length - 5) {
                 QString hex = input.sliced(index +1, 4);
 
                 if(hexMatch.match(hex).hasMatch()) {
@@ -481,16 +499,19 @@ Token _Scanner::scanString()
             buffer += QChar(unescapedCode);
             marker = index;
         } else if(peek == Chars::$EOF) {
-            error("Unterminated quote", 0);
+            index = length;
+            return error("Unterminated quote", 0);
         } else {
             advance();
         }
+        advance();
     }
 
     QString last = input.sliced(marker, index - marker);
-    advance();
+    advance(); // Skip terminating quote.
 
     return Token::newStringToken(start, index, buffer + last);
+    **/
 }
 
 Token _Scanner::scanQuestion(int start)

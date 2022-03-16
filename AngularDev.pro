@@ -11,23 +11,18 @@ CONFIG += c++11
 include(libs/QLightTerminal/QLightTerminal.pri)
 
 SOURCES += \
-    angular/chars.cpp \
-    angular/lexer.cpp \
-    angular/parser.cpp \
-    estree/estree.cpp \
-    angularformatter.cpp \
+    parser/angular/typescript/chars.cpp \
+    parser/angular/typescript/lexer.cpp \
+    parser/angular/angularformatter.cpp \
     codeeditor.cpp \
     formattedtext.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    angular/chars.h \
-    angular/lexer.h \
-    angular/parser.h \
-    estree/estree.h \
-    estree/types.h \
-    angularformatter.h \
+    parser/angular/typescript/chars.h \
+    parser/angular/typescript/lexer.h \
+    parser/angular/angularformatter.h \
     codeeditor.h \
     formattedtext.h \
     formatter.h \
