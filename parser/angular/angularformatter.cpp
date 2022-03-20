@@ -5,29 +5,28 @@
 
 #include <vector>
 
-AngularFormatter::AngularFormatter()
-{
+AngularFormatter::AngularFormatter() {
 
 }
 
-AngularFormatter::~AngularFormatter(){
+AngularFormatter::~AngularFormatter() {
 
 }
 
-const QRegularExpression* AngularFormatter::getSeparators(){
+const QRegularExpression *AngularFormatter::getSeparators() {
     return &separators;
 }
 
-FormattedLine* AngularFormatter::formatLine(FormattedLine *line){
-    std::vector<Token> tokens = l.tokenize(*line->rawText);
-    FormattedString* tempLine = new FormattedString[tokens.size()];
+FormattedLine *AngularFormatter::formatLine(FormattedLine *line) {
+    std::vector <Token> tokens = l.tokenize(*line->rawText);
+    FormattedString *tempLine = new FormattedString[tokens.size()];
 
     int start = 0;
     int i = 0;
-    while(i < tokens.size()){
-        FormattedString* s = &tempLine[i];
+    while (i < tokens.size()) {
+        FormattedString *s = &tempLine[i];
 
-        switch(tokens[i].type) {
+        switch (tokens[i].type) {
             case TokenType::Keyword:
                 s->bg = 0;
                 s->fg = 2;

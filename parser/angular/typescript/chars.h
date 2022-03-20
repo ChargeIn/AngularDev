@@ -2,8 +2,7 @@
 #define CHARS_H
 
 
-class Chars
-{
+class Chars {
 public:
     static const int $EOF = 0;
     static const int $BSPACE = 8;

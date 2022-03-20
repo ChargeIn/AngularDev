@@ -19,17 +19,16 @@ typedef struct {
 
 typedef struct {
     int size;
-    FormattedString* strings;
-    QString* rawText;
+    FormattedString *strings;
+    QString *rawText;
 } FormattedLine;
 
-class Formatter
-{
+class Formatter {
 public:
-    virtual const QRegularExpression* getSeparators() = 0;
+    virtual const QRegularExpression *getSeparators() = 0;
 
     // reformates the line based on the raw text
-    virtual FormattedLine* formatLine(FormattedLine* line) = 0;
+    virtual FormattedLine *formatLine(FormattedLine *line) = 0;
 };
 
 #endif // FORMATTER_H

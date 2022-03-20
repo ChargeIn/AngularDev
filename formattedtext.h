@@ -7,7 +7,7 @@
 
 typedef struct {
     int size;
-    FormattedLine* lines;
+    FormattedLine *lines;
 } FormattedBlock;
 
 typedef struct {
@@ -21,17 +21,16 @@ enum TEXT_SCOPE {
     SCOPE_NONE = 1 << 0,
 };
 
-class FormattedText
-{
+class FormattedText {
 public:
-    Formatter* formatter;
+    Formatter *formatter;
     int blockCount = 0;
     const int blockSize = 5;
-    FormattedBlock* blocks;
+    FormattedBlock *blocks;
     Cursor cursor;
     int lastCharPos = 0; // last x position of the cursor before up/down move
 
-    FormattedText(Formatter* formatter);
+    FormattedText(Formatter *formatter);
 
     ~FormattedText();
 
@@ -64,9 +63,9 @@ private:
 
     void removeBlock(int pos);
 
-    void deleteBlock(FormattedBlock* block);
+    void deleteBlock(FormattedBlock *block);
 
-    void deleteLine(FormattedLine* line);
+    void deleteLine(FormattedLine *line);
 };
 
 #endif // FORMATTEDTEXT_H

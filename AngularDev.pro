@@ -31,7 +31,14 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+DISTFILES += \
+    styles/main.qss
+
+DESTDIR = $$OUT_PWD
+QMAKE_POST_LINK = $(COPY_DIR) $$PWD/styles $$DESTDIR
+
 # Default rules for deployment.
+
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target

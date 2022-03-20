@@ -3,13 +3,12 @@
 
 #include <QWidget>
 
-class NumberLine : public QWidget
-{
+class NumberLine : public QWidget {
     Q_OBJECT
 public:
     explicit NumberLine(QWidget *parent = nullptr);
 
-signals:
+    signals:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -22,9 +21,9 @@ protected:
 
     void focusOutEvent(QFocusEvent *event) override;
 
-    void mousePressEvent(QMouseEvent * event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
-    void mouseDoubleClickEvent(QMouseEvent * event ) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     void mouseReleaseEvent(QMouseEvent *event) override;
 

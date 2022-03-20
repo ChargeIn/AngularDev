@@ -5,15 +5,13 @@
 #include "codeeditor.h"
 
 #include <QProcess>
+#include <QGraphicsBlurEffect>
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
+        : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     ui->tabWidget->insertTab(0, new QLightTerminal(), "Console");
     ui->code->addWidget(new CodeEditor());
-
 
     QString program = {"./../../../../../Documents/coding/SimplePDF/node_modules/.bin/prettier"};
 
@@ -24,8 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << myProcess->readAllStandardError();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 

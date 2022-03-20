@@ -9,8 +9,7 @@
 #include "formatter.h"
 #include "typescript/lexer.h"
 
-class AngularFormatter: public Formatter
-{
+class AngularFormatter : public Formatter {
 public:
     const QStringList baseKeyWords{"const", "function", "let", "class", "export"};
     const QRegularExpression separators = QRegularExpression("(\\s+ |[ #:;,.+\\-_\\(\\{\\}\\)\\/\"<>])");
@@ -19,9 +18,9 @@ public:
 
     ~AngularFormatter();
 
-    const QRegularExpression* getSeparators() override;
+    const QRegularExpression *getSeparators() override;
 
-    FormattedLine* formatLine(FormattedLine* line) override;
+    FormattedLine *formatLine(FormattedLine *line) override;
 
 private:
     Lexer l;

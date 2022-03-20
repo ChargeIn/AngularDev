@@ -1,7 +1,6 @@
 #include "chars.h"
 
-bool Chars::isWhitespace(int code)
-{
+bool Chars::isWhitespace(int code) {
     return (code >= $TAB && code <= $SPACE) || (code == $NBSP);
 }
 

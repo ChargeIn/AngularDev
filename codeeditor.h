@@ -19,16 +19,16 @@ typedef struct {
     int textOffset; // text offset from the left
 } EditorWindow;
 
-class CodeEditor : public QWidget
-{
+class CodeEditor : public QWidget {
     Q_OBJECT
 public:
     explicit CodeEditor(QFile *file = nullptr, QWidget *parent = nullptr);
 
     ~CodeEditor();
 
-public slots:
-    void openFile(QFile *file);
+public
+    slots:
+            void openFile(QFile * file);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -41,9 +41,9 @@ protected:
 
     void focusOutEvent(QFocusEvent *event) override;
 
-    void mousePressEvent(QMouseEvent * event ) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
-    void mouseDoubleClickEvent(QMouseEvent * event ) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
 
     void mouseReleaseEvent(QMouseEvent *event) override;
 
@@ -51,19 +51,23 @@ protected:
 
 private:
     EditorWindow win;
-    FormattedText* text;
-    Formatter* formatter;
+    FormattedText *text;
+    Formatter *formatter;
     const QChar cursorChar = QChar(9613);
+
+    constexpr static const QColor
+    numberLine = QColor(68, 68, 88);
 
     /*
      * Terminal colors (same as xterm)
      */
-    constexpr static const QColor colors[5] = {
-        QColor(24,24,24),           // Default background color
-        QColor(187,187,187),        // Default font color
-        QColor(204, 120, 50),       // Base Key Words
-        QColor(104, 151, 187),      // Numbers
-        QColor(106, 135, 89)        // String
+    constexpr static const QColor
+    colors[5] = {
+        QColor(27, 27, 34),           // Default background color QColor(24,24,24)
+                QColor(233, 233, 233),        // Default font color
+                QColor(204, 120, 50),       // Base Key Words
+                QColor(104, 151, 187),      // Numbers
+                QColor(106, 135, 89)        // String
     };
 };
 

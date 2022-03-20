@@ -9,14 +9,14 @@
 #include <optional>
 
 enum TokenType {
-  Character,
-  Identifier,
-  PrivateIdentifier,
-  Keyword,
-  String,
-  Operator,
-  Number,
-  Error
+    Character,
+    Identifier,
+    PrivateIdentifier,
+    Keyword,
+    String,
+    Operator,
+    Number,
+    Error
 };
 
 class Token {
@@ -94,7 +94,7 @@ public:
 
     void advance();
 
-    std::optional<Token> scanToken();
+    std::optional <Token> scanToken();
 
     static bool isIdentifierStart(int code);
 
@@ -127,10 +127,9 @@ public:
     Token error(QString message, int offset);
 };
 
-class Lexer
-{
+class Lexer {
 public:
-    static std::vector<Token> tokenize(QString text);
+    static std::vector <Token> tokenize(QString text);
 };
 
 #endif // LEXER_H
