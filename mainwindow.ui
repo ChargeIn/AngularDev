@@ -25,7 +25,21 @@
         <widget class="QWidget" name="centralwidget">
             <layout class="QVBoxLayout" name="verticalLayout_2" stretch="2,1">
                 <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,2">
+                    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,1,2">
+                        <item>
+                            <widget class="QPushButton" name="pushButton_2">
+                                <property name="text">
+                                    <string>PushButton</string>
+                                </property>
+                            </widget>
+                        </item>
+                        <item>
+                            <widget class="QPushButton" name="pushButton">
+                                <property name="text">
+                                    <string>PushButton</string>
+                                </property>
+                            </widget>
+                        </item>
                         <item>
                             <widget class="QTreeView" name="treeView">
                                 <property name="styleSheet">
@@ -57,29 +71,14 @@
                 </item>
             </layout>
         </widget>
-        <widget class="QMenuBar" name="menubar">
-            <property name="geometry">
-                <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>992</width>
-                    <height>22</height>
-                </rect>
+        <action name="actionCloseWindow">
+            <property name="text">
+                <string>CloseWindow</string>
             </property>
-            <property name="minimumSize">
-                <size>
-                    <width>0</width>
-                    <height>0</height>
-                </size>
+            <property name="toolTip">
+                <string>Close</string>
             </property>
-            <widget class="QMenu" name="menuFile">
-                <property name="title">
-                    <string>File</string>
-                </property>
-            </widget>
-            <addaction name="menuFile"/>
-        </widget>
-        <widget class="QStatusBar" name="statusbar"/>
+        </action>
     </widget>
     <resources/>
     <connections/>

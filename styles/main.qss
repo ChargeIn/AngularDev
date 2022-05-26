@@ -1,0 +1,8 @@
+QWidget {
+    background-color: #1b1b22;
+    color: #ffffff;
+}
+
+QMenuBar {
+    background-color: #272730;
+}

@@ -10,6 +10,7 @@ CONFIG += c++11
 
 include(libs/QLightTerminal/QLightTerminal.pri)
 
+
 SOURCES += \
     parser/angular/typescript/chars.cpp \
     parser/angular/typescript/lexer.cpp \
@@ -17,7 +18,8 @@ SOURCES += \
     codeeditor.cpp \
     formattedtext.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    ui/titlebar.cpp
 
 HEADERS += \
     parser/angular/typescript/chars.h \
@@ -26,7 +28,8 @@ HEADERS += \
     codeeditor.h \
     formattedtext.h \
     formatter.h \
-    mainwindow.h
+    mainwindow.h \
+    ui/titlebar.h
 
 FORMS += \
     mainwindow.ui

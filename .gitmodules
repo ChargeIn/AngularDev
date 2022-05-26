@@ -4,3 +4,6 @@
 [submodule "libs/Prettier"]
 	path = libs/Prettier
 	url = https://github.com/ChargeIn/Prettier
+[submodule "libs/framlesshelper"]
+	path = libs/framlesshelper
+	url = https://github.com/ChargeIn/framelesshelper
