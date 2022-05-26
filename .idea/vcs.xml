@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/libs/QLightTerminal" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/libs/framlesshelper" vcs="Git" />
   </component>
 </project>
